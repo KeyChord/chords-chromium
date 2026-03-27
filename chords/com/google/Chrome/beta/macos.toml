@@ -1,0 +1,9 @@
+[config]
+name = "Google Chrome Beta"
+extends = "@keychord/chords-chromium/chords/com/google/Chrome/macos.toml"
+
+[config.js]
+module = '''
+import createChromiumHandler from "dist/chrome.js";
+export default createChromiumHandler(import.meta, "/Applications/Google Chrome Beta.app");
+'''

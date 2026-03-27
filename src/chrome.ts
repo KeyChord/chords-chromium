@@ -7,41 +7,52 @@ export default async function createChromiumHandler(meta: ImportMeta, appPath: s
   let isPendingRestart = false;
   let remoteDebuggingPort: number | null = null;
 
-  // TODO: check
-  setAppNeedsRelaunch(meta.bundleId, true);
+  if (meta.enableDebuggingPort) {
+    // TODO: check
+    setAppNeedsRelaunch(meta.bundleId, true);
 
-  const hasRemoteDebuggingPort = async (pid: number) => {
-    const { stdout } = await spawn("ps", ["-p", pid.toString(), "-o", "command="]);
-    return stdout.includes("remote-debugging-port");
-  };
+    const hasRemoteDebuggingPort = async (pid: number) => {
+      const { stdout } = await spawn("ps", ["-p", pid.toString(), "-o", "command="]);
+      return stdout.includes("remote-debugging-port");
+    };
 
-  // Ensures the app is launched with remote debugging
-  onAppLaunch(meta.bundleId, async (app) => {
-    if (!(await hasRemoteDebuggingPort(app.pid))) {
-      isPendingRestart = true;
-      await spawn("kill", ["-15", app.pid.toString()]);
-    }
-  });
+    // Ensures the app is launched with remote debugging
+    onAppLaunch(meta.bundleId, async (app) => {
+      if (!(await hasRemoteDebuggingPort(app.pid))) {
+        isPendingRestart = true;
+        await spawn("kill", ["-15", app.pid.toString()]);
+      }
+    });
 
-  onAppTerminate(meta.bundleId, async () => {
-    if (isPendingRestart) {
-      isPendingRestart = false;
-      remoteDebuggingPort = await getPort();
-      await spawn("open", [
-        "-na",
-        appPath,
-        "--args",
-        `--remote-debugging-port=${remoteDebuggingPort}`,
-      ]);
-    }
-  });
+    onAppTerminate(meta.bundleId, async () => {
+      if (isPendingRestart) {
+        isPendingRestart = false;
+        remoteDebuggingPort = await getPort();
+        await spawn("open", [
+          "-na",
+          appPath,
+          "--args",
+          `--remote-debugging-port=${remoteDebuggingPort}`,
+        ]);
+      }
+    });
+  }
 
   const chromeRemoteInterfaceBinPath = join(import.meta.url, "bin/chrome-remote-interface");
-  return async function (code: string) {
+
+  async function handlerJs(code: string) {
     if (!remoteDebuggingPort) {
       return false;
     }
 
     await spawn(chromeRemoteInterfaceBinPath, [remoteDebuggingPort.toString()], { stdin: { string: code } });
+  }
+
+  return async function handler(action: 'js', code: string) {
+    if (action === 'js') {
+      return handlerJs(code);
+    }
+
+    return false;
   };
 }

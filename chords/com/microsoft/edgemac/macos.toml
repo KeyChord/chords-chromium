@@ -1,5 +1,5 @@
 [config]
-name = "Brave"
+name = "Microsoft Edge"
 extends = "@keychord/chords-chromium/chords/base.toml"
 
 [config.js]

@@ -1,12 +1,6 @@
 # https://support.google.com/chrome/answer/157179 > Mac
 [config]
-name = "Google Chrome"
-
-[config.js]
-module = '''
-import createChromiumHandler from "dist/chrome.js";
-export default createChromiumHandler(import.meta, "/Applications/Google Chrome.app");
-'''
+name = "Chromium Base Shortcuts"
 
 [chords]
 # Window

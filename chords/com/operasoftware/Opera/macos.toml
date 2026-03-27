@@ -1,9 +1,9 @@
 [config]
-name = "Brave"
+name = "Opera"
 extends = "@keychord/chords-chromium/chords/base.toml"
 
 [config.js]
 module = '''
 import createChromiumHandler from "dist/chrome.js";
-export default createChromiumHandler(import.meta, "/Applications/Brave.app");
+export default createChromiumHandler(import.meta, "/Applications/Opera.app");
 '''
