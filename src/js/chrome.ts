@@ -3,13 +3,13 @@ import { join } from "desm";
 import { onAppLaunch, onAppTerminate, setAppNeedsRelaunch } from "chord";
 import getPort from "get-port";
 
-export default async function createChromiumHandler(meta: ImportMeta, appPath: string) {
+export default async function createChromiumHandler(this: ImportMeta, appPath: string) {
   let isPendingRestart = false;
   let remoteDebuggingPort: number | null = null;
 
-  if (meta.enableDebuggingPort) {
+  if (this.enableDebuggingPort) {
     // TODO: check
-    setAppNeedsRelaunch(meta.bundleId, true);
+    setAppNeedsRelaunch(this.bundleId, true);
 
     const hasRemoteDebuggingPort = async (pid: number) => {
       const { stdout } = await spawn("ps", ["-p", pid.toString(), "-o", "command="]);
@@ -17,14 +17,14 @@ export default async function createChromiumHandler(meta: ImportMeta, appPath: s
     };
 
     // Ensures the app is launched with remote debugging
-    onAppLaunch(meta.bundleId, async (app) => {
+    onAppLaunch(this.bundleId, async (app) => {
       if (!(await hasRemoteDebuggingPort(app.pid))) {
         isPendingRestart = true;
         await spawn("kill", ["-15", app.pid.toString()]);
       }
     });
 
-    onAppTerminate(meta.bundleId, async () => {
+    onAppTerminate(this.bundleId, async () => {
       if (isPendingRestart) {
         isPendingRestart = false;
         remoteDebuggingPort = await getPort();

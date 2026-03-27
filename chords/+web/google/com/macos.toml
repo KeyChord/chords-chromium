@@ -1,12 +1,6 @@
 [config]
 name = "google.com"
 
-[config.js]
-module = '''
-import createChromiumHandler from 'dist/chromium.js';
-export default createChromiumHandler(import.meta);
-'''
-
 [chords]
 '?r' = { name = "Results" }
 r1 = { name = "Result 1", args = ['js', '$(`div[lang="en"]:has(cite[role="text"])`).eq(0)'] }

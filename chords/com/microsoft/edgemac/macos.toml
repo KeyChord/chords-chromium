@@ -3,7 +3,4 @@ name = "Microsoft Edge"
 extends = "@keychord/chords-chromium/chords/base.toml"
 
 [config.js]
-module = '''
-import createChromiumHandler from "dist/chrome.js";
-export default createChromiumHandler(import.meta, "/Applications/Brave.app");
-'''
+default = ['chrome.js', '/Applications/Microsoft Edge.app']
