@@ -38,7 +38,7 @@ export default async function createChromiumHandler(this: ImportMeta, appPath: s
     });
   }
 
-  const chromeRemoteInterfaceBinPath = join(import.meta.url, "bin/chrome-remote-interface");
+  const chromeRemoteInterfaceBinPath = join(import.meta.url, "../bin/chrome-remote-interface");
 
   async function handlerJs(code: string) {
     if (!remoteDebuggingPort) {
