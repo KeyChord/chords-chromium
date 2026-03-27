@@ -1,6 +1,6 @@
 # @keychord/chords-chromium
 
-Chords for chromium-based browsers. Currently supports:
+Chord package for chromium-based browsers. Currently supports:
 
 - [Google Chrome](./chords/com/google/Chrome/macos.toml)
 - [Google Chrome Beta](./chords/com/google/Chrome/beta/macos.toml)
