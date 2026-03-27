@@ -1,0 +1,10 @@
+[config]
+name = "ChatGPT Atlas"
+extends = "@keychord/chords-chromium/chords/com/google/Chrome/macos.toml"
+
+[config.js]
+meta = { debuggingPort = false }
+module = '''
+import createChromiumHandler from "dist/chrome.js";
+export default createChromiumHandler(import.meta, "/Applications/ChatGPT Atlas.app");
+'''
