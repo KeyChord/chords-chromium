@@ -1,12 +1,12 @@
 import { $ } from 'dax';
-import {keychord, keychordBin} from '@keychord/vite-plugin';
+import chordPackage from '@keychord/vite-plugin';
 
 export default {
   plugins: [
-    keychord(),
+    chordPackage(),
     {
       async buildEnd() {
-        await $`bun build ./src/bin/* --target=bun --outdir=./bin`;
+        await $`bun build  ./src/bin/chrome-remote-interface.ts --target=bun --outfile=./bin/chrome-remote-interface.js`;
       }
     }
   ]

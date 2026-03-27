@@ -1,4 +1,5 @@
 {
   "extends": "@keychord/tsconfig",
-  "include": ["src", "src/bin", "bin"]
+  "include": ["src"],
+  "exclude": ["bin"]
 }

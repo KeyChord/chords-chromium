@@ -447,7 +447,7 @@ async function createChromiumHandler(appPath) {
 			}
 		});
 	}
-	const chromeRemoteInterfaceBinPath = urlJoin(import.meta.url, "bin/chrome-remote-interface");
+	const chromeRemoteInterfaceBinPath = urlJoin(import.meta.url, "../bin/chrome-remote-interface");
 	async function handlerJs(code) {
 		if (!remoteDebuggingPort) return false;
 		await spawn$1(chromeRemoteInterfaceBinPath, [remoteDebuggingPort.toString()], { stdin: { string: code } });
