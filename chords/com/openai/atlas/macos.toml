@@ -1,6 +1,9 @@
-[config]
 name = "ChatGPT Atlas"
-extends = "@keychord/chords-chromium/chords/base.toml"
 
-[config.js]
-default = ['chrome.js', "/Applications/ChatGPT Atlas.app"]
+[handlers.js]
+type = "js"
+file = 'chrome.js'
+args = ['/Applications/ChatGPT Atlas.app']
+
+[[import]]
+file = "base.toml"

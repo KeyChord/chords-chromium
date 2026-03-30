@@ -1,6 +1,9 @@
-[config]
 name = "Google Chrome Canary"
-extends = "@keychord/chords-chromium/chords/com/google/Chrome/canary.toml"
 
-[config.js]
-default = ['chrome.js', "/Applications/Google Chrome Canary.app"]
+[handlers.js]
+type = "js"
+file = "chrome.js"
+args = ["/Applications/Google Chrome Canary.app"]
+
+[[import]]
+file = "com/google/Chrome/macos.toml"

@@ -1,9 +1,10 @@
 # https://support.google.com/chrome/answer/157179 > Mac
-[config]
 name = "Google Chrome"
 
-[config.js]
-default = ['chrome.js', '/Applications/Google Chrome.app']
+[handlers.js]
+type = "js"
+file = "chrome.js"
+args = ['/Applications/Google Chrome.app']
 
 [chords]
 # Window

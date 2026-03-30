@@ -1,6 +1,9 @@
-[config]
-name = "Opera"
-extends = "@keychord/chords-chromium/chords/base.toml"
+name = "Vivaldi"
 
-[config.js]
-default = ['chrome.js', "/Applications/Vivaldi.app"]
+[handlers.js]
+type = "js"
+file = 'chrome.js'
+args = ['/Applications/Vivaldi.app']
+
+[[import]]
+file = "base.toml"
