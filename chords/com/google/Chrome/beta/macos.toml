@@ -1,7 +1,6 @@
 name = "Google Chrome Beta"
 
-[handlers.js]
-type = "js"
+[on.js]
 file = "chrome.js"
 args = ["/Applications/Google Chrome Beta.app"]
 

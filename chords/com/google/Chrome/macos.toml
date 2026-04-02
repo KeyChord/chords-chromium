@@ -1,8 +1,7 @@
 # https://support.google.com/chrome/answer/157179 > Mac
 name = "Google Chrome"
 
-[handlers.js]
-type = "js"
+[on.js]
 file = "chrome.js"
 args = ['/Applications/Google Chrome.app']
 

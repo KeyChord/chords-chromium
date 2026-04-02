@@ -1,7 +1,6 @@
 name = "Microsoft Edge"
 
-[handlers.js]
-type = "js"
+[on.js]
 file = 'chrome.js'
 args = ['/Applications/Microsoft Edge.app']
 

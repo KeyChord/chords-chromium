@@ -1,7 +1,6 @@
 name = "Brave"
 
-[handlers.js]
-type = "js"
+[on.js]
 file = "chrome.js"
 args = ['/Applications/Brave.app']
 

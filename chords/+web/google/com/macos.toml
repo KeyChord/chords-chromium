@@ -1,7 +1,6 @@
 name = "google.com"
 
-[handlers.js]
-type = "js"
+[on.js]
 file = "chrome.js"
 args = []
 

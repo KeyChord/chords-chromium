@@ -9,21 +9,21 @@ import { dirname, join } from "path";
 import { onAppLaunch, onAppTerminate, setAppNeedsRelaunch } from "chord";
 import net from "node:net";
 import os from "node:os";
-//#region node_modules/.pnpm/ansi-regex@6.2.2/node_modules/ansi-regex/index.js
+//#region ../../node_modules/.pnpm/ansi-regex@6.2.2/node_modules/ansi-regex/index.js
 function ansiRegex({ onlyFirst = false } = {}) {
 	return new RegExp(`(?:\\u001B\\][\\s\\S]*?(?:\\u0007|\\u001B\\u005C|\\u009C))|[\\u001B\\u009B][[\\]()#;?]*(?:\\d{1,4}(?:[;:]\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]`, onlyFirst ? void 0 : "g");
 }
 //#endregion
-//#region node_modules/.pnpm/strip-ansi@7.2.0/node_modules/strip-ansi/index.js
-var regex = ansiRegex();
+//#region ../../node_modules/.pnpm/strip-ansi@7.2.0/node_modules/strip-ansi/index.js
+const regex = ansiRegex();
 function stripAnsi(string) {
 	if (typeof string !== "string") throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
 	if (!string.includes("\x1B") && !string.includes("")) return string;
 	return string.replace(regex, "");
 }
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/context.js
-var getContext = (raw) => ({
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/context.js
+const getContext = (raw) => ({
 	start: process.hrtime.bigint(),
 	command: raw.map((part) => getCommandPart(stripAnsi(part))).join(" "),
 	state: {
@@ -34,10 +34,10 @@ var getContext = (raw) => ({
 		nonIterable: [false, false]
 	}
 });
-var getCommandPart = (part) => /[^\w./-]/.test(part) ? `'${part.replaceAll("'", "'\\''")}'` : part;
+const getCommandPart = (part) => /[^\w./-]/.test(part) ? `'${part.replaceAll("'", "'\\''")}'` : part;
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/options.js
-var getOptions = ({ stdin, stdout, stderr, stdio = [
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/options.js
+const getOptions = ({ stdin, stdout, stderr, stdio = [
 	stdin,
 	stdout,
 	stderr
@@ -56,7 +56,7 @@ var getOptions = ({ stdin, stdout, stderr, stdio = [
 		cwd
 	};
 };
-var addLocalPath = ({ Path = "", PATH = Path, ...env }, cwd) => {
+const addLocalPath = ({ Path = "", PATH = Path, ...env }, cwd) => {
 	const pathParts = PATH.split(path.delimiter);
 	const localPaths = getLocalPaths([], path.resolve(cwd)).map((localPath) => path.join(localPath, "node_modules/.bin")).filter((localPath) => !pathParts.includes(localPath));
 	return {
@@ -64,10 +64,10 @@ var addLocalPath = ({ Path = "", PATH = Path, ...env }, cwd) => {
 		PATH: [...localPaths, PATH].filter(Boolean).join(path.delimiter)
 	};
 };
-var getLocalPaths = (localPaths, localPath) => localPaths.at(-1) === localPath ? localPaths : getLocalPaths([...localPaths, localPath], path.resolve(localPath, ".."));
+const getLocalPaths = (localPaths, localPath) => localPaths.at(-1) === localPath ? localPaths : getLocalPaths([...localPaths, localPath], path.resolve(localPath, ".."));
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/windows.js
-var applyForceShell = async (file, commandArguments, options) => await shouldForceShell(file, options) ? [
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/windows.js
+const applyForceShell = async (file, commandArguments, options) => await shouldForceShell(file, options) ? [
 	escapeFile(file),
 	commandArguments.map((argument) => escapeArgument(argument)),
 	{
@@ -79,12 +79,12 @@ var applyForceShell = async (file, commandArguments, options) => await shouldFor
 	commandArguments,
 	options
 ];
-var shouldForceShell = async (file, { shell, cwd, env = process.env }) => process.platform === "win32" && !shell && !await isExe(file, cwd, env);
-var isExe = (file, cwd, { Path = "", PATH = Path }) => exeExtensions.some((extension) => file.toLowerCase().endsWith(extension)) || mIsExe(file, cwd, PATH);
-var EXE_MEMO = {};
-var memoize = (function_) => (...arguments_) => EXE_MEMO[arguments_.join("\0")] ??= function_(...arguments_);
-var access = memoize(fs.access);
-var mIsExe = memoize(async (file, cwd, PATH) => {
+const shouldForceShell = async (file, { shell, cwd, env = process.env }) => process.platform === "win32" && !shell && !await isExe(file, cwd, env);
+const isExe = (file, cwd, { Path = "", PATH = Path }) => exeExtensions.some((extension) => file.toLowerCase().endsWith(extension)) || mIsExe(file, cwd, PATH);
+const EXE_MEMO = {};
+const memoize = (function_) => (...arguments_) => EXE_MEMO[arguments_.join("\0")] ??= function_(...arguments_);
+const access = memoize(fs.access);
+const mIsExe = memoize(async (file, cwd, PATH) => {
 	const parts = PATH.split(path.delimiter).filter(Boolean).map((part) => part.replace(/^"(.*)"$/, "$1"));
 	try {
 		await Promise.any([cwd, ...parts].flatMap((part) => exeExtensions.map((extension) => access(`${path.resolve(part, file)}${extension}`))));
@@ -93,11 +93,11 @@ var mIsExe = memoize(async (file, cwd, PATH) => {
 	}
 	return true;
 });
-var exeExtensions = [".exe", ".com"];
-var escapeArgument = (argument) => escapeFile(escapeFile(`"${argument.replaceAll(/(\\*)"/g, "$1$1\\\"").replace(/(\\*)$/, "$1$1")}"`));
-var escapeFile = (file) => file.replaceAll(/([()\][%!^"`<>&|;, *?])/g, "^$1");
+const exeExtensions = [".exe", ".com"];
+const escapeArgument = (argument) => escapeFile(escapeFile(`"${argument.replaceAll(/(\\*)"/g, "$1$1\\\"").replace(/(\\*)$/, "$1$1")}"`));
+const escapeFile = (file) => file.replaceAll(/([()\][%!^"`<>&|;, *?])/g, "^$1");
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/once.js
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/once.js
 function once(emitter, event) {
 	return new Promise((resolve, reject) => {
 		function onEvent(...arguments_) {
@@ -123,8 +123,8 @@ function once(emitter, event) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/result.js
-var getResult = async (nodeChildProcess, { input }, context) => {
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/result.js
+const getResult = async (nodeChildProcess, { input }, context) => {
 	const instance = await nodeChildProcess;
 	if (input !== void 0) {
 		instance.stdin.write(input);
@@ -144,35 +144,35 @@ var getResult = async (nodeChildProcess, { input }, context) => {
 		throw getResultError(error, instance, context);
 	}
 };
-var onStreamError = (stream) => new Promise((_resolve, reject) => {
+const onStreamError = (stream) => new Promise((_resolve, reject) => {
 	stream.on("error", (error) => {
 		if (!["ERR_STREAM_PREMATURE_CLOSE", "EPIPE"].includes(error?.code)) reject(error);
 	});
 });
-var checkFailure = ({ command }, { exitCode, signalName }) => {
+const checkFailure = ({ command }, { exitCode, signalName }) => {
 	if (signalName !== void 0) throw new SubprocessError(`Command was terminated with ${signalName}: ${command}`);
 	if (exitCode !== void 0) throw new SubprocessError(`Command failed with exit code ${exitCode}: ${command}`);
 };
-var getResultError = (error, instance, context) => Object.assign(getErrorInstance(error, context), getErrorOutput(instance), getOutputs(context));
-var getErrorInstance = (error, { command }) => error instanceof SubprocessError ? error : new SubprocessError(`Command failed: ${command}`, { cause: error });
+const getResultError = (error, instance, context) => Object.assign(getErrorInstance(error, context), getErrorOutput(instance), getOutputs(context));
+const getErrorInstance = (error, { command }) => error instanceof SubprocessError ? error : new SubprocessError(`Command failed: ${command}`, { cause: error });
 var SubprocessError = class extends Error {
 	name = "SubprocessError";
 };
-var getErrorOutput = ({ exitCode, signalCode }) => ({
+const getErrorOutput = ({ exitCode, signalCode }) => ({
 	...exitCode < 1 ? {} : { exitCode },
 	...signalCode === null ? {} : { signalName: signalCode }
 });
-var getOutputs = ({ state: { stdout, stderr, output }, command, start }) => ({
+const getOutputs = ({ state: { stdout, stderr, output }, command, start }) => ({
 	stdout: getOutput(stdout),
 	stderr: getOutput(stderr),
 	output: getOutput(output),
 	command,
 	durationMs: Number(process.hrtime.bigint() - start) / 1e6
 });
-var getOutput = (output) => output.at(-1) === "\n" ? output.slice(0, output.at(-2) === "\r" ? -2 : -1) : output;
+const getOutput = (output) => output.at(-1) === "\n" ? output.slice(0, output.at(-2) === "\r" ? -2 : -1) : output;
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/spawn.js
-var spawnSubprocess = async (file, commandArguments, options, context) => {
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/spawn.js
+const spawnSubprocess = async (file, commandArguments, options, context) => {
 	try {
 		[file, commandArguments, options] = await applyForceShell(file, commandArguments, options);
 		[file, commandArguments, options] = concatenateShell(file, commandArguments, options);
@@ -185,7 +185,7 @@ var spawnSubprocess = async (file, commandArguments, options, context) => {
 		throw getResultError(error, {}, context);
 	}
 };
-var concatenateShell = (file, commandArguments, options) => options.shell && commandArguments.length > 0 ? [
+const concatenateShell = (file, commandArguments, options) => options.shell && commandArguments.length > 0 ? [
 	[file, ...commandArguments].join(" "),
 	[],
 	options
@@ -194,7 +194,7 @@ var concatenateShell = (file, commandArguments, options) => options.shell && com
 	commandArguments,
 	options
 ];
-var bufferOutput = (stream, { state }, streamName) => {
+const bufferOutput = (stream, { state }, streamName) => {
 	if (stream) {
 		stream.setEncoding?.("utf8");
 		if (!state.isIterating[streamName]) {
@@ -207,8 +207,8 @@ var bufferOutput = (stream, { state }, streamName) => {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/pipe.js
-var handlePipe = async (subprocesses) => {
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/pipe.js
+const handlePipe = async (subprocesses) => {
 	const [[from, to]] = await Promise.all([Promise.allSettled(subprocesses), pipeStreams(subprocesses)]);
 	if (to.reason) {
 		to.reason.pipedFrom = from.reason ?? from.value;
@@ -220,7 +220,7 @@ var handlePipe = async (subprocesses) => {
 		pipedFrom: from.value
 	};
 };
-var pipeStreams = async (subprocesses) => {
+const pipeStreams = async (subprocesses) => {
 	try {
 		const [{ stdout }, { stdin }] = await Promise.all(subprocesses.map(({ nodeChildProcess }) => nodeChildProcess));
 		if (stdin === null) throw new Error("The \"stdin\" option must be set on the first \"spawn()\" call in the pipeline.");
@@ -231,13 +231,13 @@ var pipeStreams = async (subprocesses) => {
 		throw error;
 	}
 };
-var closeStdin = async (nodeChildProcess) => {
+const closeStdin = async (nodeChildProcess) => {
 	const { stdin } = await nodeChildProcess;
 	stdin.end();
 };
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/iterable.js
-var lineIterator = async function* (subprocess, { state }, streamName, index) {
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/iterable.js
+const lineIterator = async function* (subprocess, { state }, streamName, index) {
 	if (state.isIterating[streamName] === false) throw new Error(`The subprocess must be iterated right away, for example:
 	for await (const line of spawn(...)) { ... }`);
 	state.isIterating[streamName] = true;
@@ -260,12 +260,12 @@ var lineIterator = async function* (subprocess, { state }, streamName, index) {
 		await subprocess;
 	}
 };
-var handleErrors = async (subprocess) => {
+const handleErrors = async (subprocess) => {
 	try {
 		await subprocess;
 	} catch {}
 };
-var combineAsyncIterators = async function* ({ state }, ...iterators) {
+const combineAsyncIterators = async function* ({ state }, ...iterators) {
 	try {
 		let promises = [];
 		while (iterators.length > 0) {
@@ -282,16 +282,16 @@ var combineAsyncIterators = async function* ({ state }, ...iterators) {
 		await Promise.all(iterators.map((iterator) => iterator.return()));
 	}
 };
-var getNext = async (iterator, index, { nonIterable }) => {
+const getNext = async (iterator, index, { nonIterable }) => {
 	try {
 		return await iterator.next();
 	} catch (error) {
 		return shouldIgnoreError(nonIterable, index) ? iterator.return() : iterator.throw(error);
 	}
 };
-var shouldIgnoreError = (nonIterable, index) => nonIterable.every(Boolean) ? index !== nonIterable.length - 1 : nonIterable[index];
+const shouldIgnoreError = (nonIterable, index) => nonIterable.every(Boolean) ? index !== nonIterable.length - 1 : nonIterable[index];
 //#endregion
-//#region node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/index.js
+//#region ../../node_modules/.pnpm/nano-spawn-compat@2.0.6/node_modules/nano-spawn-compat/source/index.js
 function spawn$1(file, second, third, previous) {
 	const [commandArguments = [], options = {}] = Array.isArray(second) ? [second, third] : [[], second];
 	const context = getContext([file, ...commandArguments]);
@@ -311,7 +311,7 @@ function spawn$1(file, second, third, previous) {
 	});
 }
 //#endregion
-//#region node_modules/.pnpm/desm@1.3.1/node_modules/desm/index.js
+//#region ../../node_modules/.pnpm/desm@1.3.1/node_modules/desm/index.js
 function urlDirname(url) {
 	return dirname(fileURLToPath$1(url));
 }
@@ -319,26 +319,26 @@ function urlJoin(url, ...str) {
 	return join(urlDirname(url), ...str);
 }
 //#endregion
-//#region node_modules/.pnpm/get-port@7.2.0/node_modules/get-port/index.js
+//#region ../../node_modules/.pnpm/get-port@7.2.0/node_modules/get-port/index.js
 var Locked = class extends Error {
 	constructor(port) {
 		super(`${port} is locked`);
 	}
 };
-var lockedPorts = {
+const lockedPorts = {
 	old: /* @__PURE__ */ new Set(),
 	young: /* @__PURE__ */ new Set()
 };
-var releaseOldLockedPortsIntervalMs = 1e3 * 15;
-var reservedPorts = /* @__PURE__ */ new Set();
-var timeout;
-var getLocalHosts = () => {
+const releaseOldLockedPortsIntervalMs = 1e3 * 15;
+const reservedPorts = /* @__PURE__ */ new Set();
+let timeout;
+const getLocalHosts = () => {
 	const interfaces = os.networkInterfaces();
 	const results = new Set([void 0, "0.0.0.0"]);
 	for (const _interface of Object.values(interfaces)) for (const config of _interface) results.add(config.address);
 	return results;
 };
-var checkAvailablePort = (options) => new Promise((resolve, reject) => {
+const checkAvailablePort = (options) => new Promise((resolve, reject) => {
 	const server = net.createServer();
 	server.unref();
 	server.on("error", reject);
@@ -349,7 +349,7 @@ var checkAvailablePort = (options) => new Promise((resolve, reject) => {
 		});
 	});
 });
-var getAvailablePort = async (options, hosts) => {
+const getAvailablePort = async (options, hosts) => {
 	if (options.host || options.port === 0) return checkAvailablePort(options);
 	for (const host of hosts) try {
 		await checkAvailablePort({
@@ -361,8 +361,8 @@ var getAvailablePort = async (options, hosts) => {
 	}
 	return options.port;
 };
-var isLockedPort = (port) => lockedPorts.old.has(port) || lockedPorts.young.has(port) || reservedPorts.has(port);
-var portCheckSequence = function* (ports) {
+const isLockedPort = (port) => lockedPorts.old.has(port) || lockedPorts.young.has(port) || reservedPorts.has(port);
+const portCheckSequence = function* (ports) {
 	if (ports) yield* ports;
 	yield 0;
 };
